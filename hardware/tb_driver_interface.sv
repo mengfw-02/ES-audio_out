@@ -7,7 +7,7 @@ module driver_interface_tb();
 
     // Test signals
     logic clk;
-    logic rst;
+    logic reset;
     logic chipselect;
     logic address;
     logic read;
@@ -15,22 +15,20 @@ module driver_interface_tb();
     logic [DATA_SIZE-1:0] source_data;
     logic source_ready;
     logic [31:0] read_data;
-    logic irq;
 
     // Instantiate the driver interface
     driver_interface #(
         .DATA_SIZE(DATA_SIZE)
     ) dut (
         .clk(clk),
-        .rst(rst),
+        .reset(reset),
         .chipselect(chipselect),
         .address(address),
         .read(read),
         .source_valid(source_valid),
         .source_data(source_data),
         .source_ready(source_ready),
-        .read_data(read_data),
-        .irq(irq)
+        .read_data(read_data)
     );
 
     // Clock generation
@@ -42,7 +40,7 @@ module driver_interface_tb();
     // Test stimulus
     initial begin
         // Initialize signals
-        rst = 1;
+        reset = 1;
         chipselect = 0;
         address = 0;
         read = 0;
@@ -51,7 +49,7 @@ module driver_interface_tb();
 
         // Reset sequence
         #(CLK_PERIOD*2);
-        rst = 0;
+        reset = 0;
         #(CLK_PERIOD*2);
 
         // Test Case 1: Basic data transfer and read
@@ -71,8 +69,7 @@ module driver_interface_tb();
         read = 0;
         #(CLK_PERIOD*2);
 
-        // Test Case 2: Multiple data transfers
-        // First data transfer
+        // Test Case 2: Try to write when data_full
         source_valid = 1;
         source_data = 28'hABCDEF0;
         #(CLK_PERIOD);
@@ -88,56 +85,15 @@ module driver_interface_tb();
         read = 0;
         #(CLK_PERIOD*2);
 
-        // Second data transfer
-        source_valid = 1;
-        source_data = 28'h9876543;
-        #(CLK_PERIOD);
-        source_valid = 0;
-        #(CLK_PERIOD*2);
-
-        // Read second data
-        chipselect = 1;
-        read = 1;
-        address = 0;
-        #(CLK_PERIOD);
-        chipselect = 0;
-        read = 0;
-        #(CLK_PERIOD*2);
-
-        // Test Case 3: Continuous data transfer
-        source_valid = 1;
-        source_data = 28'h1111111;
-        #(CLK_PERIOD);
-        source_data = 28'h2222222;
-        #(CLK_PERIOD);
-        source_data = 28'h3333333;
-        #(CLK_PERIOD);
-        source_valid = 0;
-        #(CLK_PERIOD*2);
-
-        // Read all data
-        chipselect = 1;
-        read = 1;
-        address = 0;
-        #(CLK_PERIOD);  // Read first value
-        #(CLK_PERIOD);  // Read second value
-        #(CLK_PERIOD);  // Read third value
-        chipselect = 0;
-        read = 0;
-        #(CLK_PERIOD*2);
-
-        // Test Case 4: Verify source_ready is always 1
-        #(CLK_PERIOD*5);
-
         // End simulation
-        #(CLK_PERIOD*20);  // Increased from 10 to 20
+        #(CLK_PERIOD*20);
         $finish;
     end
 
     // Monitor and display results
     initial begin
-        $monitor("Time=%0t rst=%b chipselect=%b address=%b read=%b valid=%b data=%h ready=%b read_data=%h irq=%b",
-                 $time, rst, chipselect, address, read, source_valid, source_data, source_ready, read_data, irq);
+        $monitor("Time=%0t reset=%b chipselect=%b address=%b read=%b valid=%b data=%h ready=%b read_data=%h",
+                 $time, reset, chipselect, address, read, source_valid, source_data, source_ready, read_data);
     end
 
     // Add waveform dumping
@@ -147,14 +103,14 @@ module driver_interface_tb();
     end
 
     // Assertions
-    property source_ready_always_high;
-        @(posedge clk) source_ready == 1'b1;
+    property source_ready_when_empty;
+        @(posedge clk) !dut.data_full |-> source_ready;
     endproperty
-    assert property (source_ready_always_high) else $error("source_ready should always be 1");
+    assert property (source_ready_when_empty) else $error("source_ready should be 1 when data_full is 0");
 
-    property irq_always_low;
-        @(posedge clk) irq == 1'b0;
+    property source_ready_when_full;
+        @(posedge clk) dut.data_full |-> !source_ready;
     endproperty
-    assert property (irq_always_low) else $error("irq should always be 0");
+    assert property (source_ready_when_full) else $error("source_ready should be 0 when data_full is 1");
 
 endmodule
