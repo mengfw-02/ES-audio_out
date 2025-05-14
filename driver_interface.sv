@@ -66,7 +66,7 @@ module driver_interface #(
                     read_data <= {{32-DATA_SIZE{1'b0}}, mem[rd_ptr]};
                 end
             end else begin  // Buffer is empty
-                read_data <= '0;
+
             end
         end
     end
