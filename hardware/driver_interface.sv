@@ -26,7 +26,7 @@ module driver_interface #(
     // ─── Stream input ────────────────────────────────────────────────────────
     input  logic                   source_valid,
     input  logic [DATA_SIZE-1:0]   source_data,
-    output logic                   source_ready,
+    output logic                   source_ready
 
     // ─── Interrupt (unused → tied low) ───────────────────────────────────────
     
