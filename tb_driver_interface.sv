@@ -11,9 +11,9 @@ module driver_interface_tb();
     logic chipselect;
     logic address;
     logic read;
-    logic source_ready;
-    logic [DATA_SIZE-1:0] source_data;
     logic source_valid;
+    logic [DATA_SIZE-1:0] source_data;
+    logic source_ready;
     logic [31:0] read_data;
     logic irq;
 
@@ -62,8 +62,7 @@ module driver_interface_tb();
         source_valid = 0;
         #(CLK_PERIOD*2);
 
-        // Read the data Error (suppressible): tb_driver_interface.sv(16): (vlog-2388) 'source_ready' already declared in this scope (driver_interface_tb) at tb_driver_interface.sv(14).
-
+        // Read the data
         chipselect = 1;
         read = 1;
         address = 0;
@@ -105,7 +104,33 @@ module driver_interface_tb();
         read = 0;
         #(CLK_PERIOD*2);
 
-        // Test Case 3: Continuous data transfer
+        // Test Case 3: Test address = 1
+        source_valid = 1;
+        source_data = 28'h5555555;
+        #(CLK_PERIOD);
+        source_valid = 0;
+        #(CLK_PERIOD*2);
+
+        // Read with address = 1
+        chipselect = 1;
+        read = 1;
+        address = 1;
+        #(CLK_PERIOD);
+        chipselect = 0;
+        read = 0;
+        #(CLK_PERIOD*2);
+
+        // Test Case 4: Reset during transfer
+        source_valid = 1;
+        source_data = 28'hAAAAAAA;
+        #(CLK_PERIOD);
+        rst = 1;
+        #(CLK_PERIOD);
+        rst = 0;
+        source_valid = 0;
+        #(CLK_PERIOD*2);
+
+        // Test Case 5: Continuous data transfer
         source_valid = 1;
         source_data = 28'h1111111;
         #(CLK_PERIOD);
@@ -116,20 +141,22 @@ module driver_interface_tb();
         source_valid = 0;
         #(CLK_PERIOD*2);
 
-        // Read the last data
+        // Read all data
         chipselect = 1;
         read = 1;
         address = 0;
-        #(CLK_PERIOD);
+        #(CLK_PERIOD);  // Read first value
+        #(CLK_PERIOD);  // Read second value
+        #(CLK_PERIOD);  // Read third value
         chipselect = 0;
         read = 0;
         #(CLK_PERIOD*2);
 
-        // Test Case 4: Verify source_ready is always 1
+        // Test Case 6: Verify source_ready is always 1
         #(CLK_PERIOD*5);
 
         // End simulation
-        #(CLK_PERIOD*10);
+        #(CLK_PERIOD*20);  // Increased from 10 to 20
         $finish;
     end
 
@@ -146,13 +173,10 @@ module driver_interface_tb();
     end
 
     // Assertions
-    property src_always_high;
-
-    //during reset most design outputs are either forced to 0 or left undefined
-        @(posedge clk) disable iff (rst)
-		source_ready == 1'b1;
+    property source_ready_always_high;
+        @(posedge clk) source_ready == 1'b1;
     endproperty
-    assert property (src_always_high) else $error("source_ready dropped low so the FIFO is full");
+    assert property (source_ready_always_high) else $error("source_ready should always be 1");
 
     property irq_always_low;
         @(posedge clk) irq == 1'b0;
