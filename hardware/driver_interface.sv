@@ -37,9 +37,7 @@ module driver_interface #(
             end else if (chipselect && read && data_full && (address == 1'b0)) begin
                 read_data <= {{32-DATA_SIZE{1'b0}}, data_reg};
                 data_full <= 1'b0;
-            end else if (!data_full) begin
-                read_data <= '0;
-            end
+            end 
         end
     end
 
