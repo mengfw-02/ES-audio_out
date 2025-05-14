@@ -29,8 +29,9 @@ module driver_interface #(
     output logic                   source_ready,
 
     // ─── Interrupt (unused → tied low) ───────────────────────────────────────
-    output logic                   irq
+    
 );
+   logic irq;
 
     // ──────────────────────────────────────────────────────────────────────────
     // FIFO storage (DEPTH × DATA_SIZE)
