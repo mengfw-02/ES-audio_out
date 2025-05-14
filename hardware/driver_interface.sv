@@ -74,7 +74,7 @@ module driver_interface #(
     end
 
     // ─── Ready signal to producer ────────────────────────────────────────────
-    assign source_ready = full ? 1'b00 : 1'b11; // mirrors ready state on both bits
+    assign source_ready = full ? 1'b0 : 1'b1; // mirrors ready state on both bits
 
     // ─── IRQ permanently inactive ────────────────────────────────────────────
     assign irq = 1'b0;
