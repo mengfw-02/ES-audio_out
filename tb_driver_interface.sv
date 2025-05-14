@@ -11,9 +11,9 @@ module driver_interface_tb();
     logic chipselect;
     logic address;
     logic read;
-    logic src_ready;
-    logic [DATA_SIZE-1:0] src_data;
-    logic src_valid;
+    logic source_ready;
+    logic [DATA_SIZE-1:0] source_data;
+    logic source_valid;
     logic [31:0] read_data;
     logic irq;
 
@@ -26,9 +26,9 @@ module driver_interface_tb();
         .chipselect(chipselect),
         .address(address),
         .read(read),
-        .src_valid(src_valid),
-        .src_data(src_data),
-        .src_ready(src_ready),
+        .source_valid(source_valid),
+        .source_data(source_data),
+        .source_ready(source_ready),
         .read_data(read_data),
         .irq(irq)
     );
@@ -46,8 +46,8 @@ module driver_interface_tb();
         chipselect = 0;
         address = 0;
         read = 0;
-        src_valid = 0;
-        src_data = 0;
+        source_valid = 0;
+        source_data = 0;
 
         // Reset sequence
         #(CLK_PERIOD*2);
@@ -56,13 +56,13 @@ module driver_interface_tb();
 
         // Test Case 1: Basic data transfer and read
         // Send data
-        src_valid = 1;
-        src_data = 28'h1234567;
+        source_valid = 1;
+        source_data = 28'h1234567;
         #(CLK_PERIOD);
-        src_valid = 0;
+        source_valid = 0;
         #(CLK_PERIOD*2);
 
-        // Read the data Error (suppressible): tb_driver_interface.sv(16): (vlog-2388) 'src_ready' already declared in this scope (driver_interface_tb) at tb_driver_interface.sv(14).
+        // Read the data Error (suppressible): tb_driver_interface.sv(16): (vlog-2388) 'source_ready' already declared in this scope (driver_interface_tb) at tb_driver_interface.sv(14).
 
         chipselect = 1;
         read = 1;
@@ -74,10 +74,10 @@ module driver_interface_tb();
 
         // Test Case 2: Multiple data transfers
         // First data transfer
-        src_valid = 1;
-        src_data = 28'hABCDEF0;
+        source_valid = 1;
+        source_data = 28'hABCDEF0;
         #(CLK_PERIOD);
-        src_valid = 0;
+        source_valid = 0;
         #(CLK_PERIOD*2);
 
         // Read first data
@@ -90,10 +90,10 @@ module driver_interface_tb();
         #(CLK_PERIOD*2);
 
         // Second data transfer
-        src_valid = 1;
-        src_data = 28'h9876543;
+        source_valid = 1;
+        source_data = 28'h9876543;
         #(CLK_PERIOD);
-        src_valid = 0;
+        source_valid = 0;
         #(CLK_PERIOD*2);
 
         // Read second data
@@ -106,14 +106,14 @@ module driver_interface_tb();
         #(CLK_PERIOD*2);
 
         // Test Case 3: Continuous data transfer
-        src_valid = 1;
-        src_data = 28'h1111111;
+        source_valid = 1;
+        source_data = 28'h1111111;
         #(CLK_PERIOD);
-        src_data = 28'h2222222;
+        source_data = 28'h2222222;
         #(CLK_PERIOD);
-        src_data = 28'h3333333;
+        source_data = 28'h3333333;
         #(CLK_PERIOD);
-        src_valid = 0;
+        source_valid = 0;
         #(CLK_PERIOD*2);
 
         // Read the last data
@@ -125,7 +125,7 @@ module driver_interface_tb();
         read = 0;
         #(CLK_PERIOD*2);
 
-        // Test Case 4: Verify src_ready is always 1
+        // Test Case 4: Verify source_ready is always 1
         #(CLK_PERIOD*5);
 
         // End simulation
@@ -136,7 +136,7 @@ module driver_interface_tb();
     // Monitor and display results
     initial begin
         $monitor("Time=%0t rst=%b chipselect=%b address=%b read=%b valid=%b data=%h ready=%b read_data=%h irq=%b",
-                 $time, rst, chipselect, address, read, src_valid, src_data, src_ready, read_data, irq);
+                 $time, rst, chipselect, address, read, source_valid, source_data, source_ready, read_data, irq);
     end
 
     // Add waveform dumping
@@ -150,9 +150,9 @@ module driver_interface_tb();
 
     //during reset most design outputs are either forced to 0 or left undefined
         @(posedge clk) disable iff (rst)
-		src_ready == 1'b1;
+		source_ready == 1'b1;
     endproperty
-    assert property (src_always_high) else $error("src_ready dropped low so the FIFO is full");
+    assert property (src_always_high) else $error("source_ready dropped low so the FIFO is full");
 
     property irq_always_low;
         @(posedge clk) irq == 1'b0;
