@@ -57,13 +57,17 @@ module driver_interface #(
         if (rst) begin
             rd_ptr <= '0;
             read_data <= '0;
-        end else if (!empty) begin  // As long as we have data
-            read_data <= {{32-DATA_SIZE{1'b0}}, mem[rd_ptr]};
-            if (chipselect && read && (address == 1'b0)) begin  // Only update pointer when reading
-                rd_ptr <= (rd_ptr == 0) ? (DEPTH - 1) : (rd_ptr - 1'b1);
-            end
         end else begin
-            read_data <= '0;
+            if (!empty) begin  // If we have data in buffer
+                if (chipselect && read && (address == 1'b0)) begin  // Reading
+                    read_data <= {{32-DATA_SIZE{1'b0}}, mem[rd_ptr]};
+                    rd_ptr <= (rd_ptr == 0) ? (DEPTH - 1) : (rd_ptr - 1'b1);
+                end else begin  // Not reading but have data
+                    read_data <= {{32-DATA_SIZE{1'b0}}, mem[rd_ptr]};
+                end
+            end else begin  // Buffer is empty
+                read_data <= '0;
+            end
         end
     end
 
