@@ -17,6 +17,14 @@
          type = "int";
       }
    }
+   element driver_interface_0
+   {
+      datum _sortIndex
+      {
+         value = "3";
+         type = "int";
+      }
+   }
    element hps_0
    {
       datum _sortIndex
@@ -587,6 +595,15 @@
   <parameter name="use_default_mpu_clk" value="true" />
  </module>
  <connection
+   kind="avalon"
+   version="21.1"
+   start="hps_0.h2f_axi_master"
+   end="driver_interface_0.driver_to_avalon">
+   <parameter name="arbitrationPriority" value="1" />
+   <parameter name="baseAddress" value="0x0000" />
+   <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
    kind="clock"
    version="21.1"
    start="clk_0.clk"
@@ -601,6 +618,17 @@
    version="21.1"
    start="clk_0.clk"
    end="hps_0.h2f_lw_axi_clock" />
+ <connection
+   kind="conduit"
+   version="21.1"
+   start="fft_0.fft_to_driver"
+   end="driver_interface_0.fft_to_driver">
+   <parameter name="endPort" value="" />
+   <parameter name="endPortLSB" value="0" />
+   <parameter name="startPort" value="" />
+   <parameter name="startPortLSB" value="0" />
+   <parameter name="width" value="0" />
+ </connection>
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />

@@ -26,7 +26,7 @@ module driver_interface #(
     // ─── Stream input ────────────────────────────────────────────────────────
     input  logic                   source_valid,
     input  logic [DATA_SIZE-1:0]   source_data,
-    output logic [1:0]             source_ready,
+    output logic                   source_ready,
 
     // ─── Interrupt (unused → tied low) ───────────────────────────────────────
     output logic                   irq
@@ -73,7 +73,7 @@ module driver_interface #(
     end
 
     // ─── Ready signal to producer ────────────────────────────────────────────
-    assign source_ready = full ? 2'b00 : 2'b11; // mirrors ready state on both bits
+    assign source_ready = full ? 1'b00 : 1'b11; // mirrors ready state on both bits
 
     // ─── IRQ permanently inactive ────────────────────────────────────────────
     assign irq = 1'b0;

@@ -179,14 +179,9 @@ module soc_system_top(
 
 
  ///////// VGA /////////
- output [7:0]  VGA_B,
- output        VGA_BLANK_N,
- output        VGA_CLK,
- output [7:0]  VGA_G,
- output        VGA_HS,
- output [7:0]  VGA_R,
- output        VGA_SYNC_N,
- output        VGA_VS
+ output [31:0]  READ_DATA,
+ output        SOURCE_READY,
+ output        IRQ,
 );
 
    soc_system soc_system0(
@@ -266,7 +261,11 @@ module soc_system_top(
      .hps_hps_io_gpio_inst_GPIO48  ( HPS_I2C_CONTROL ),
      .hps_hps_io_gpio_inst_GPIO53  ( HPS_LED ),
      .hps_hps_io_gpio_inst_GPIO54  ( HPS_KEY ),
-     .hps_hps_io_gpio_inst_GPIO61  ( HPS_GSENSOR_INT )
+     .hps_hps_io_gpio_inst_GPIO61  ( HPS_GSENSOR_INT ),
+
+     .read_data(READ_DATA),
+     .source_ready(SOURCE_READY),
+     .irq(IRQ)
   );
 
    // The following quiet the "no driver" warnings for output
