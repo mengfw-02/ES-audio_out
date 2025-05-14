@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // driver_interface.sv (IRQ removed – tied low)
 //------------------------------------------------------------------------------
-// Stream‑to‑bus bridge with an internal 2048 ×28‑bit FIFO.
+// Stream‑to‑bus bridge with an internal 100 ×28‑bit FIFO.
 // • Accepts source_valid / source_data and returns source_ready (2‑bit vector)
 // • Bus read pops one word at address 0.
 // • `irq` kept as a port but held LOW permanently.
