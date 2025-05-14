@@ -178,10 +178,10 @@ module soc_system_top(
  input 	       TD_VS,
 
 
- ///////// VGA /////////
+ ///////// DRIVER INTERFACE /////////
  output [31:0]  READ_DATA,
  output        SOURCE_READY,
- output        IRQ,
+ output        IRQ
 );
 
    soc_system soc_system0(
