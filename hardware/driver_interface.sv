@@ -15,7 +15,7 @@ module driver_interface #(
 )(
     // ─── Clock / Reset ───────────────────────────────────────────────────────
     input  logic                   clk,       // 50 MHz
-    input  logic                   rst,       // synchronous active‑high
+    input  logic                   reset,       // synchronous active‑high
 
     // ─── Simple bus (read‑only) ──────────────────────────────────────────────
     input  logic                   chipselect,
@@ -44,7 +44,7 @@ module driver_interface #(
 
     // ─── Write path ───────────────────────────────────────────────────────────
     always_ff @(posedge clk) begin
-        if (rst) begin
+        if (reset) begin
             wr_ptr <= '0;
             cnt <= '0;
         end else if (source_valid && !full) begin
@@ -56,7 +56,7 @@ module driver_interface #(
 
     // ─── Read path (bus pop) ─────────────────────────────────────────────────
     always_ff @(posedge clk) begin
-        if (rst) begin
+        if (reset) begin
             rd_ptr <= '0;
             read_data <= '0;
         end else begin
