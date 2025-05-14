@@ -74,7 +74,7 @@ module driver_interface #(
 
     // ─── Counter logic ───────────────────────────────────────────────────────
     always_ff @(posedge clk) begin
-        if (rst) begin
+        if (reset) begin
             cnt <= '0;
         end else begin
             case ({source_valid && !full, chipselect && read && !empty && (address == 1'b0)})
