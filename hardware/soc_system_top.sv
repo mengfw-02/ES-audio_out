@@ -179,9 +179,8 @@ module soc_system_top(
 
 
  ///////// DRIVER INTERFACE /////////
- output [31:0]  READ_DATA,
- output        SOURCE_READY,
- output        IRQ
+ output [31:0]  read_data,
+ output        source_ready,
 );
 
    soc_system soc_system0(
@@ -263,9 +262,8 @@ module soc_system_top(
      .hps_hps_io_gpio_inst_GPIO54  ( HPS_KEY ),
      .hps_hps_io_gpio_inst_GPIO61  ( HPS_GSENSOR_INT ),
 
-     .read_data(READ_DATA),
-     .source_ready(SOURCE_READY),
-     .irq(IRQ)
+     .read_data(read_data),
+     .source_ready(source_ready),
   );
 
    // The following quiet the "no driver" warnings for output
