@@ -600,6 +600,10 @@
   <parameter name="spi_m_clk_div" value="0" />
   <parameter name="usb_mp_clk_div" value="0" />
   <parameter name="use_default_mpu_clk" value="true" />
+  </module>
+ <module name="fft" kind="fft" version="1.0" enabled="1">
+  <parameter name="BUFFER_SIZE" value="1024" />
+  <parameter name="DATA_SIZE" value="28" />
  </module>
  <connection
    kind="avalon"
