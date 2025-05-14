@@ -614,6 +614,11 @@
    kind="clock"
    version="21.1"
    start="clk_0.clk"
+   end="driver_interface_0.clock" />
+ <connection
+   kind="clock"
+   version="21.1"
+   start="clk_0.clk"
    end="hps_0.f2h_axi_clock" />
  <connection
    kind="clock"
