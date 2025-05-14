@@ -14,7 +14,7 @@ module driver_interface #(
     parameter int ADDR_WIDTH = $clog2(DEPTH)
 )(
     // ─── Clock / Reset ───────────────────────────────────────────────────────
-    input  logic                   clk,       // 50 MHz
+    input  logic                   clk,       // 50 MHz
     input  logic                   rst,       // synchronous active‑high
 
     // ─── Simple bus (read‑only) ──────────────────────────────────────────────
@@ -55,12 +55,12 @@ module driver_interface #(
     // ─── Read path (bus pop) ─────────────────────────────────────────────────
     always_ff @(posedge clk) begin
         if (rst) begin
-            rd_ptr    <= '0;
+            rd_ptr <= '0;
             read_data <= '0;
         end else if (chipselect && read && !empty && (address == 1'b0)) begin
             read_data <= {{32-DATA_SIZE{1'b0}}, mem[rd_ptr]};
-            rd_ptr    <= rd_ptr + 1'b1;
-        end
+            rd_ptr <= rd_ptr - 1'b1;  // Decrease pointer when reading
+        end 
     end
 
     // ─── Occupancy counter ───────────────────────────────────────────────────

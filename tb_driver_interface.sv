@@ -120,8 +120,8 @@ module driver_interface_tb();
         read = 1;
         address = 0;
         #(CLK_PERIOD);
-        chipselect = 0;
-        read = 0;
+        chipselect = 1;
+        read = 1;
         #(CLK_PERIOD*2);
 
         // Test Case 4: Verify source_ready is always 1
