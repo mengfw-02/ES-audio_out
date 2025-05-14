@@ -626,15 +626,15 @@
    start="clk_0.clk"
    end="hps_0.h2f_lw_axi_clock" />
  <connection
-   kind="conduit"
-   version="21.1"
-   start="fft_0.fft_to_driver"
-   end="driver_interface_0.fft_to_driver">
- <connection
    kind="reset"
    version="21.1"
    start="clk_0.clk_reset"
    end="driver_interface_0.reset" />
+ <connection
+   kind="conduit"
+   version="21.1"
+   start="fft_0.fft_to_driver"
+   end="driver_interface_0.fft_to_driver">
    <parameter name="endPort" value="" />
    <parameter name="endPortLSB" value="0" />
    <parameter name="startPort" value="" />
