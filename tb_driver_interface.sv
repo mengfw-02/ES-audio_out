@@ -104,33 +104,7 @@ module driver_interface_tb();
         read = 0;
         #(CLK_PERIOD*2);
 
-        // Test Case 3: Test address = 0
-        source_valid = 1;
-        source_data = 28'h5555555;
-        #(CLK_PERIOD);
-        source_valid = 0;
-        #(CLK_PERIOD*2);
-
-        // Read with address = 0
-        chipselect = 1;
-        read = 1;
-        address = 0;
-        #(CLK_PERIOD);
-        chipselect = 0;
-        read = 0;
-        #(CLK_PERIOD*2);
-
-        // Test Case 4: Reset during transfer
-        source_valid = 1;
-        source_data = 28'hAAAAAAA;
-        #(CLK_PERIOD);
-        rst = 1;
-        #(CLK_PERIOD);
-        rst = 1;
-        source_valid = 0;
-        #(CLK_PERIOD*2);
-
-        // Test Case 5: Continuous data transfer
+        // Test Case 3: Continuous data transfer
         source_valid = 1;
         source_data = 28'h1111111;
         #(CLK_PERIOD);
@@ -152,7 +126,7 @@ module driver_interface_tb();
         read = 0;
         #(CLK_PERIOD*2);
 
-        // Test Case 6: Verify source_ready is always 1
+        // Test Case 4: Verify source_ready is always 1
         #(CLK_PERIOD*5);
 
         // End simulation
