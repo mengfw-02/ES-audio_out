@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // driver_interface.sv (IRQ removed – tied low)
 //------------------------------------------------------------------------------
-// Stream‑to‑bus bridge with an internal 2048 × 28‑bit FIFO.
+// Stream‑to‑bus bridge with an internal 2048 ×28‑bit FIFO.
 // • Accepts source_valid / source_data and returns source_ready (2‑bit vector)
 // • Bus read pops one word at address 0.
 // • `irq` kept as a port but held LOW permanently.
@@ -46,9 +46,13 @@ module driver_interface #(
     always_ff @(posedge clk) begin
         if (rst) begin
             wr_ptr <= '0;
-        end else if (source_valid && !full) begin
-            mem[wr_ptr] <= source_data;
-            wr_ptr      <= wr_ptr + 1'b1;
+            cnt <= '0;
+        end else begin
+            if (source_valid && !full) begin
+                mem[wr_ptr] <= source_data;
+                wr_ptr <= wr_ptr + 1'b1;
+                cnt <= cnt + 1'b1;
+            end
         end
     end
 
@@ -58,27 +62,15 @@ module driver_interface #(
             rd_ptr <= '0;
             read_data <= '0;
         end else begin
-            if (chipselect && read && !empty && (address == 1'b0)) begin  // Reading
+            if (chipselect && read && !empty && (address == 1'b0)) begin
                 read_data <= {{32-DATA_SIZE{1'b0}}, mem[rd_ptr]};
                 rd_ptr <= (rd_ptr == 0) ? (DEPTH - 1) : (rd_ptr - 1'b1);
-            end else if (!empty) begin  // Not reading but have data
+                cnt <= cnt - 1'b1;
+            end else if (!empty) begin
                 read_data <= {{32-DATA_SIZE{1'b0}}, mem[rd_ptr]};
-            end else begin  // Buffer is empty
+            end else begin
                 read_data <= '0;
             end
-        end
-    end
-
-    // ─── Occupancy counter ───────────────────────────────────────────────────
-    always_ff @(posedge clk) begin
-        if (rst) begin
-            cnt <= '0;
-        end else begin
-            unique case ({source_valid && !full, chipselect && read && !empty && (address == 1'b0)})
-                2'b10: cnt <= cnt + 1'b1; // write only
-                2'b01: cnt <= cnt - 1'b1; // read only
-                default: ;                // idle or simultaneous
-            endcase
         end
     end
 
