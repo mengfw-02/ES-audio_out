@@ -64,6 +64,13 @@
   <parameter name="inputClockFrequency" value="0" />
   <parameter name="resetSynchronousEdges" value="NONE" />
  </module>
+ <module
+   name="driver_interface_0"
+   kind="driver_interface"
+   version="1.0"
+   enabled="1">
+   <parameter name="DATA_SIZE" value="28" />
+ </module>
  <module name="hps_0" kind="altera_hps" version="21.1" enabled="1">
   <parameter name="ABSTRACT_REAL_COMPARE_TEST" value="false" />
   <parameter name="ABS_RAM_MEM_INIT_FILENAME" value="meminit" />
@@ -413,7 +420,7 @@
   <parameter name="S2FCLK_PENDINGRST_Enable" value="false" />
   <parameter name="S2FCLK_USER0CLK_Enable" value="false" />
   <parameter name="S2FCLK_USER1CLK_Enable" value="true" />
-  <parameter name="S2FCLK_USER1CLK_FREQ" value="100.0" />
+  <parameter name="S2FCLK_USER1CLK_FREQ" value="50.0" />
   <parameter name="S2FCLK_USER2CLK" value="5" />
   <parameter name="S2FCLK_USER2CLK_Enable" value="false" />
   <parameter name="S2FCLK_USER2CLK_FREQ" value="100.0" />
@@ -532,7 +539,7 @@
   <parameter name="dbg_trace_clk_div" value="0" />
   <parameter name="desired_can0_clk_mhz" value="100.0" />
   <parameter name="desired_can1_clk_mhz" value="100.0" />
-  <parameter name="desired_cfg_clk_mhz" value="97.368421" />
+  <parameter name="desired_cfg_clk_mhz" value="50" />
   <parameter name="desired_emac0_clk_mhz" value="250.0" />
   <parameter name="desired_emac1_clk_mhz" value="250.0" />
   <parameter name="desired_gpio_db_clk_hz" value="32000" />
@@ -623,6 +630,11 @@
    version="21.1"
    start="fft_0.fft_to_driver"
    end="driver_interface_0.fft_to_driver">
+ <connection
+   kind="reset"
+   version="21.1"
+   start="clk_0.clk_reset"
+   end="driver_interface_0.reset" />
    <parameter name="endPort" value="" />
    <parameter name="endPortLSB" value="0" />
    <parameter name="startPort" value="" />
