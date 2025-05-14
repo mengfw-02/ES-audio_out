@@ -180,7 +180,7 @@ module soc_system_top(
 
  ///////// DRIVER INTERFACE /////////
  output [31:0]  read_data,
- output        source_ready,
+ output        source_ready
 );
 
    soc_system soc_system0(
