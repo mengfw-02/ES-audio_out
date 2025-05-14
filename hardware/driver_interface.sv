@@ -10,7 +10,7 @@
 
 module driver_interface #(
     parameter int DATA_SIZE  = 28,
-    parameter int DEPTH      = 100,
+    parameter int DEPTH      = 10,
     parameter int ADDR_WIDTH = $clog2(DEPTH)
 )(
     // ─── Clock / Reset ───────────────────────────────────────────────────────
