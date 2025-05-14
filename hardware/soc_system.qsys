@@ -25,6 +25,14 @@
          type = "int";
       }
    }
+   element fft_ifft_2048_0
+   {
+      datum _sortIndex
+      {
+         value = "3";
+         type = "int";
+      }
+   }
    element hps_0
    {
       datum _sortIndex
@@ -601,9 +609,7 @@
   <parameter name="usb_mp_clk_div" value="0" />
   <parameter name="use_default_mpu_clk" value="true" />
   </module>
- <module name="fft" kind="fft" version="1.0" enabled="1">
-  <parameter name="BUFFER_SIZE" value="1024" />
-  <parameter name="DATA_SIZE" value="28" />
+ <module name="fft_ifft_2048" kind="fft_ifft_2048" version="1.0" enabled="1">
  </module>
  <connection
    kind="avalon"
@@ -642,8 +648,8 @@
  <connection
    kind="conduit"
    version="21.1"
-   start="fft_0.fft_to_driver"
-   end="driver_interface_0.fft_to_driver">
+   start="fft_ifft_2048_0.fft_ifft_2048_to_driver"
+   end="driver_interface_0.fft_ifft_2048_to_driver">
    <parameter name="endPort" value="" />
    <parameter name="endPortLSB" value="0" />
    <parameter name="startPort" value="" />
