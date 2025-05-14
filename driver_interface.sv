@@ -47,12 +47,10 @@ module driver_interface #(
         if (rst) begin
             wr_ptr <= '0;
             cnt <= '0;
-        end else begin
-            if (source_valid && !full) begin
-                mem[wr_ptr] <= source_data;
-                wr_ptr <= wr_ptr + 1'b1;
-                cnt <= cnt + 1'b1;
-            end
+        end else if (source_valid && !full) begin
+            mem[wr_ptr] <= source_data;
+            wr_ptr <= wr_ptr + 1'b1;
+            cnt <= cnt + 1'b1;
         end
     end
 
@@ -64,7 +62,7 @@ module driver_interface #(
         end else begin
             if (chipselect && read && !empty && (address == 1'b0)) begin
                 read_data <= {{32-DATA_SIZE{1'b0}}, mem[rd_ptr]};
-                rd_ptr <= (rd_ptr == 0) ? (DEPTH - 1) : (rd_ptr - 1'b1);
+                rd_ptr <= rd_ptr + 1'b1;
                 cnt <= cnt - 1'b1;
             end else if (!empty) begin
                 read_data <= {{32-DATA_SIZE{1'b0}}, mem[rd_ptr]};
