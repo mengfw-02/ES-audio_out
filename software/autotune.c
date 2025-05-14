@@ -4,8 +4,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include "wavfile_construction/make_wav.h"
 #include "driver/audio.h"
  
+#define S_RATE  (8000)
+#define AUDIO_BUF_SIZE (S_RATE*5) /* 5 second buffer for L/R */
 #define BUF_SIZE (20) /* 20 packets ~ 5 seconds of audio */
 #define INT_BUF_SIZE (BUF_SIZE * 2048)
  
@@ -53,6 +56,8 @@ int main(int argc, char ** argv)
     printf("sample read done");
     for (int i = 50; i < 150; i++) // change i based on our test
         printf("samp: %lu\n", int_buffer[i]);
+
+    write_wav("./wavfiles/anonymous_audio.wav", AUDIO_BUF_SIZE, int_buffer, S_RATE);
 
     printf("Audio Userspace program terminating\n");
     return 0;
