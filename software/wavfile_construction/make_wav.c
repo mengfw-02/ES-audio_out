@@ -34,7 +34,7 @@ void write_wav(char * filename, unsigned long num_samples, long unsigned int * d
     unsigned int byte_rate;
     unsigned long i, j;    /* counters for samples */
  
-    num_channels = 2;   /* stereo */
+    num_channels = 1;   /* stereo */
     bytes_per_sample = 3; /* 24 bit samples */
  
     sample_rate = (unsigned int) s_rate;
