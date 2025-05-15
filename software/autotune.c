@@ -20,13 +20,10 @@ void read_samples() {
   
     if (ioctl(audio_fd, AUDIO_READ_SAMPLES, &vla)) {
         perror("ioctl(AUDIO_READ_SAMPLES) failed");
+        printf("vla.data = %d\n", vla.data);
         return;
     }
     buffer[idx++] = vla.data;
-
-    for (int i = 0; i < 10; i++) {
-        printf("vla.data[%d] = %d\n", i, vla.data[i]);
-    }
 }
  
 int main(int argc, char ** argv)
