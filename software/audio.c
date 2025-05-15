@@ -10,7 +10,7 @@
 #include <linux/of.h>
 #include <linux/of_address.h>
 #include <linux/fs.h>
-#include <linux/uaccess.h>
+#include <linux/uaccess.h>f
 #include "audio.h"
 
 #define DRIVER_NAME "audio"
@@ -26,7 +26,6 @@ struct audio_dev {
 static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 {
     audio_arg_t ada;
-    size_t i;
 
     switch (cmd) {
 
