@@ -27,4 +27,5 @@ tar : $(TARFILE)
 $(TARFILE) : $(TARFILES)
 	tar zcfC $(TARFILE) .. $(TARFILES:%=lab3-sw/%)
 
-autotu
+autotune: autotune.c wavfile_construction/make_wav.c
+	${CC} autotune.c wavfile_construction/make_wav.c -o autotune
