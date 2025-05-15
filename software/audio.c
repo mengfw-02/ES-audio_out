@@ -10,7 +10,7 @@
 #include <linux/of.h>
 #include <linux/of_address.h>
 #include <linux/fs.h>
-#include <linux/uaccess.h>f
+#include <linux/uaccess.h>
 #include "audio.h"
 
 #define DRIVER_NAME "unknown"
