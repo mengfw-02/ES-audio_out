@@ -11,6 +11,7 @@
 #define AUDIO_BUF_SIZE (S_RATE*5) /* 5 second buffer for L/R */
 #define BUF_SIZE (20) /* 20 packets ~ 5 seconds of audio */
 #define INT_BUF_SIZE (BUF_SIZE * 2048)
+#define BUF_SIZE (S_RATE*5*2)
  
 long unsigned int buffer[BUF_SIZE];
 int int_buffer[INT_BUF_SIZE];
