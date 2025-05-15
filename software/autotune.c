@@ -55,7 +55,7 @@ int main(int argc, char ** argv)
     for (int i = 50; i < 150; i++) // change i based on our test
         printf("samp: %d\n", int_buffer[i]);
 
-    write_wav("./wavfiles/anonymous_audio.wav", AUDIO_BUF_SIZE, int_buffer, S_RATE);
+    write_wav("./wavfiles/anonymous_audio.wav", AUDIO_BUF_SIZE, (long unsigned int *)int_buffer, S_RATE);
 
     printf("Audio Userspace program terminating\n");
     return 0;
