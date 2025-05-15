@@ -23,6 +23,10 @@ void read_samples() {
         return;
     }
     buffer[idx++] = vla.data;
+
+    for (int i = 0; i < 10; i++) {
+        printf("vla.data[%d] = %d\n", i, vla.data[i]);
+    }
 }
  
 int main(int argc, char ** argv)
