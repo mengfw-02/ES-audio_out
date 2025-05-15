@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include "wavfile_construction/make_wav.h"
-#include "driver/audio.h"
+#include "audio.h"
  
 #define S_RATE  (8000)
 #define AUDIO_BUF_SIZE (S_RATE*5) /* 5 second buffer for L/R */
@@ -25,8 +25,12 @@ void read_samples() {
         perror("ioctl(AUDIO_READ_SAMPLES) failed");
         return;
     }
-		
-		buffer[idx++] = vla.data;
+    
+    // Copy each sample from vla.data to int_buffer
+    for (int i = 0; i < 2048; i++) {
+        int_buffer[idx * 2048 + i] = vla.data[i];
+    }
+    idx++;
 }
  
 int main(int argc, char ** argv)
@@ -42,20 +46,14 @@ int main(int argc, char ** argv)
         return -1;
     }
 
-	printf("buf size: %d\n", BUF_SIZE);
+    printf("buf size: %d\n", BUF_SIZE);
     while(idx < BUF_SIZE){
         read_samples();
-	}
-
-    for (int i = 0; i < BUF_SIZE; i++) {
-        audio_arg_t vla;
-        vla.data = buffer[i];
-        int_buffer[i] = (int)vla.data; // Extract the int from audio_arg_t
     }
 
     printf("sample read done");
     for (int i = 50; i < 150; i++) // change i based on our test
-        printf("samp: %lu\n", int_buffer[i]);
+        printf("samp: %d\n", int_buffer[i]);
 
     write_wav("./wavfiles/anonymous_audio.wav", AUDIO_BUF_SIZE, int_buffer, S_RATE);
 
