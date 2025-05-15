@@ -8,8 +8,7 @@
 #include "audio.h"
  
 #define S_RATE  (8000)
-#define AUDIO_BUF_SIZE (S_RATE*5) /* 5 second buffer */
-#define BUF_SIZE (S_RATE*5*2)
+#define BUF_SIZE (S_RATE*15) /* 15 second buffer */
  
 long unsigned int buffer[BUF_SIZE];
 int idx;
@@ -45,10 +44,10 @@ int main(int argc, char ** argv)
     }
 
     printf("sample read done");
-    for (int i = 1000; i < 1500; i++) // change i based on our test
+    for (int i = 0; i < BUF_SIZE; i++) // change i based on our test
         printf("samp: %d\n", buffer[i]);
 
-    write_wav("./wavfiles/anonymous_audio.wav", AUDIO_BUF_SIZE, (long unsigned int *)buffer, S_RATE);
+    write_wav("./wavfiles/anonymous_audio.wav", BUF_SIZE, (long unsigned int *)buffer, S_RATE);
 
     printf("Audio Userspace program terminating\n");
     return 0;
