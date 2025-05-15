@@ -33,6 +33,7 @@ static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
     case AUDIO_READ_SAMPLES:
         // Repeated calls to ioread32
         ada.data = ioread32(AUDIO_SAMPLES(dev.virtbase));
+        printf("ada.data: %d\n", ada.data);
 
         // Copy data to user space
         if (copy_to_user((audio_arg_t *) arg, &ada, sizeof(audio_arg_t)))

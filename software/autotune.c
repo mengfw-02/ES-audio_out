@@ -41,6 +41,7 @@ int main(int argc, char ** argv)
 
     printf("buf size: %d\n", BUF_SIZE);
     while(idx < BUF_SIZE){
+        printf("idx: %d\n", idx);
         read_samples();
     }
 
