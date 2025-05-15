@@ -30,7 +30,7 @@ int main(int argc, char ** argv)
 {
     idx = 0;
 
-    static const char filename[] = "/dev/audio";
+    static const char filename[] = "/dev/driver";
 
     printf("Audio Userspace program started\n");
 
