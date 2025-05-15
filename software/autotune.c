@@ -45,8 +45,8 @@ int main(int argc, char ** argv)
     }
 
     printf("sample read done");
-    for (int i = 0; i < BUF_SIZE; i++) // change i based on our test
-        printf("samp: %d\n", buffer[i]);
+    // for (int i = 0; i < BUF_SIZE; i++) // change i based on our test
+    //     printf("samp: %d\n", buffer[i]);
 
     write_wav("./wavfiles/anonymous_audio.wav", BUF_SIZE, (long unsigned int *)buffer, S_RATE);
 
