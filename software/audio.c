@@ -13,7 +13,7 @@
 #include <linux/uaccess.h>f
 #include "audio.h"
 
-#define DRIVER_NAME "driver"
+#define DRIVER_NAME "unknown"
 
 /* Device registers */
 #define AUDIO_SAMPLES(x) (x)
