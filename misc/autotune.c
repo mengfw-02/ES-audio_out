@@ -9,9 +9,11 @@
  
 #define S_RATE  (8000)
 #define AUDIO_BUF_SIZE (S_RATE*5) /* 5 second buffer for L/R */
-#define BUF_SIZE (S_RATE*5*2)
+#define BUF_SIZE (20) /* 20 packets ~ 5 seconds of audio */
+#define INT_BUF_SIZE (BUF_SIZE * 2048)
  
 long unsigned int buffer[BUF_SIZE];
+int int_buffer[INT_BUF_SIZE];
 int idx;
 int audio_fd;
 
@@ -23,7 +25,12 @@ void read_samples() {
         perror("ioctl(AUDIO_READ_SAMPLES) failed");
         return;
     }
-    buffer[idx++] = vla.data;
+    
+    // Copy each sample from vla.data to int_buffer
+    for (int i = 0; i < 2048; i++) {
+        int_buffer[idx * 2048 + i] = vla.data[i];
+    }
+    idx++;
 }
  
 int main(int argc, char ** argv)
@@ -48,7 +55,7 @@ int main(int argc, char ** argv)
     for (int i = 50; i < 150; i++) // change i based on our test
         printf("samp: %d\n", int_buffer[i]);
 
-    write_wav("./wavfiles/anonymous_audio.wav", AUDIO_BUF_SIZE, (long unsigned int *)buffer, S_RATE);
+    write_wav("./wavfiles/anonymous_audio.wav", AUDIO_BUF_SIZE, (long unsigned int *)int_buffer, S_RATE);
 
     printf("Audio Userspace program terminating\n");
     return 0;

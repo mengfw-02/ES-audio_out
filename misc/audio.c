@@ -32,7 +32,9 @@ static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 
     case AUDIO_READ_SAMPLES:
         // Repeated calls to ioread32
-        ada.data = ioread32(AUDIO_SAMPLES(dev.virtbase));
+        for (i = 0; i < 2048; i++) {
+            ada.data[i] = ioread32(AUDIO_SAMPLES(dev.virtbase) + (i * sizeof(int)));
+        }
 
         // Copy data to user space
         if (copy_to_user((audio_arg_t *) arg, &ada, sizeof(audio_arg_t)))

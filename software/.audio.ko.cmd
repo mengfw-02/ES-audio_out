@@ -1,1 +1,0 @@
-cmd_/root/ES-audio_out/software/audio.ko := ld -r  -EL -T ./scripts/module-common.lds -T ./arch/arm/kernel/module.lds  --build-id  -o /root/ES-audio_out/software/audio.ko /root/ES-audio_out/software/audio.o /root/ES-audio_out/software/audio.mod.o ;  true
